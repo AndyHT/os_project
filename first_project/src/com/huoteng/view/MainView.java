@@ -1,8 +1,8 @@
 package com.huoteng.view;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
+import com.huoteng.controller.*;
 
 /**
  * Created by huoteng on 4/20/15.
@@ -30,7 +30,7 @@ public class MainView {
         elevatorContainer.add(labelTile, BorderLayout.NORTH);
 
         /**
-         * 生成上下行按钮组
+         * 生成上下行按钮组并添加相应Listener
          * up_down_btns:上下行按钮组
          */
         JPanel up_down_btns = new JPanel();
@@ -38,6 +38,7 @@ public class MainView {
         JButton btn;
         for (int i = 20; i > 0; i--) {
             btn = new JButton("Up");
+            btn.addActionListener(new ElevatorViewController());
             up_down_btns.add(btn);
 
             btn = new JButton("Down");
