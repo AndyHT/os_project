@@ -14,7 +14,6 @@ public class MainView {
     public static final String TITLE = "Elevator Attemper";
 
     private  JFrame elevatorMainView;
-    private  Container elevatorContainer;
     private JButton btn;
     private JLabel label;
 
@@ -30,16 +29,17 @@ public class MainView {
 
     /**
      * 电梯内部按钮
+     * panels_elevator
      * btns_elevator1:内部楼层按钮
      * lables_elevatorNumber:电梯编号Lable
      * lables_elevatorCondition:电梯状态Lable
      */
+    private ArrayList<JPanel> panels_elevator;
     private ArrayList<JButton> btns_elevator1;
     private ArrayList<JButton> btns_elevator2;
     private ArrayList<JButton> btns_elevator3;
     private ArrayList<JButton> btns_elevator4;
     private ArrayList<JButton> btns_elevator5;
-    private ArrayList<JLabel> labels_elevatorNumber;
     private ArrayList<JLabel> labels_elvatorCondition;
 
     /**
@@ -65,7 +65,7 @@ public class MainView {
             panel_upDown.add(label);
             lables_floor.add(label);
         }
-        elevatorContainer.add(panel_upDown, BorderLayout.WEST);
+        elevatorMainView.add(panel_upDown, BorderLayout.WEST);
     }
 
     /**
@@ -74,49 +74,43 @@ public class MainView {
      */
     private void createPanel_inner() {
         JPanel panel_inner = new JPanel();
-        panel_inner.setLayout(new GridLayout(25, 5));
+        JPanel panel_oneElevator;
+        panel_inner.setLayout(new GridLayout(1, 5));
         labels_elvatorCondition = new ArrayList<>();
-        labels_elevatorNumber = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            label = new JLabel((i + 1) + " 号电梯");
-            panel_inner.add(label);
-            labels_elevatorNumber.add(label);
-        }
-        for (int i = 0; i < 5; i++) {
-            label = new JLabel("1层");
-            panel_inner.add(label);
-            labels_elvatorCondition.add(label);
-        }
+        panels_elevator = new ArrayList<>();
 
-        ArrayList<JButton> btns_inner = new ArrayList<>();
-        for (int i = 20; i > 0; i--) {
-            btn = new JButton(Integer.toString(i));
-            btns_inner.add(btn);
-        }
-        btn = new JButton("开门");
-        btns_inner.add(btn);
-        btn = new JButton("关门");
-        btns_inner.add(btn);
-        btn = new JButton("报警");
-        btns_inner.add(btn);
+        ArrayList[] btnsList = {btns_elevator1,btns_elevator2,btns_elevator3,btns_elevator4,btns_elevator5};
 
-        btns_elevator1 = new ArrayList<>(btns_inner);
-        btns_elevator2 = new ArrayList<>(btns_inner);
-        btns_elevator3 = new ArrayList<>(btns_inner);
-        btns_elevator4 = new ArrayList<>(btns_inner);
-        btns_elevator5 = new ArrayList<>(btns_inner);
-
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 23; j++) {
-                panel_inner.add(btns_elevator1.get(j));
-                panel_inner.add(btns_elevator2.get(j));
-                panel_inner.add(btns_elevator3.get(j));
-                panel_inner.add(btns_elevator4.get(j));
-                panel_inner.add(btns_elevator5.get(j));
+        for (int j = 0; j < 5; j++) {
+            btnsList[j] = new ArrayList<>();
+            for (int i = 20; i > 0; i--) {
+                btn = new JButton(Integer.toString(i));
+                btnsList[j].add(btn);
             }
+            btn = new JButton("开门");
+            btnsList[j].add(btn);
+            btn = new JButton("关门");
+            btnsList[j].add(btn);
+            btn = new JButton("报警");
+            btnsList[j].add(btn);
         }
 
-        elevatorContainer.add(panel_inner,BorderLayout.CENTER);
+        for (int i = 0; i < 5; i++) {
+            panel_oneElevator = new JPanel();
+            panel_oneElevator.setLayout(new GridLayout(25, 1));
+            label = new JLabel((i + 1) + " 号电梯");
+            panel_oneElevator.add(label);
+            label = new JLabel("1层");
+            panel_oneElevator.add(label);
+            labels_elvatorCondition.add(label);
+            for (int j = 0; j < 23; j++) {
+                panel_oneElevator.add((JButton)btnsList[i].get(j));
+            }
+            panels_elevator.add(panel_oneElevator);
+            panel_inner.add(panel_oneElevator);
+        }
+
+        elevatorMainView.add(panel_inner,BorderLayout.CENTER);
     }
 
     /**
@@ -126,15 +120,14 @@ public class MainView {
      */
     public MainView() {
         elevatorMainView = new JFrame(TITLE);
-        elevatorContainer = elevatorMainView.getContentPane();
-        elevatorContainer.setLayout(new BorderLayout());
+        elevatorMainView.setLayout(new BorderLayout());
 
         /**
          * 生成Title lable
          */
         JLabel labelTile = new JLabel();
         labelTile.setText("操作系统项目:电梯模拟线程调度");
-        elevatorContainer.add(labelTile, BorderLayout.NORTH);
+        elevatorMainView.add(labelTile, BorderLayout.NORTH);
 
         createPanel_upDown();
         createPanel_inner();
@@ -172,15 +165,15 @@ public class MainView {
         return btns_elevator5;
     }
 
-    public ArrayList<JLabel> getLabels_elevatorNumber() {
-        return labels_elevatorNumber;
-    }
-
     public ArrayList<JLabel> getLabels_elvatorCondition() {
         return labels_elvatorCondition;
     }
 
-    public Container getElevatorContainer() {
-        return elevatorContainer;
+    public JFrame getElevatorMainView() {
+        return elevatorMainView;
+    }
+
+    public ArrayList<JPanel> getPanels_elevator() {
+        return panels_elevator;
     }
 }
