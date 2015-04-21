@@ -2,24 +2,131 @@ package com.huoteng.view;
 
 import javax.swing.*;
 import java.awt.*;
-import com.huoteng.controller.*;
+import java.util.ArrayList;
+
 
 /**
  * Created by huoteng on 4/20/15.
+ * 生成主界面
  */
 public class MainView {
 
     public static final String TITLE = "Elevator Attemper";
-    public static final int SIZE_WIDTH = 800;
-    public static final int SIZE_HEIGHT = 600;
+
+    private  JFrame elevatorMainView;
+    private  Container elevatorContainer;
+    private JButton btn;
+    private JLabel label;
 
     /**
-     * 创建并显示GUI。出于线程安全的考虑，
-     * 这个方法在事件调用线程中调用。
+     * 电梯外部按钮
+     * up_btns:上行按钮
+     * down_btns:下行按钮
+     * condition_btns:电梯状态Lable
      */
-    public static void createAndShowGUI() {
-        JFrame elevatorMainView = new JFrame(TITLE);
-        Container elevatorContainer = elevatorMainView.getContentPane();//Main View container
+    private ArrayList<JButton> btns_up;
+    private ArrayList<JButton> btns_down;
+    private ArrayList<JLabel> lables_floor;
+
+    /**
+     * 电梯内部按钮
+     * btns_elevator1:内部楼层按钮
+     * lables_elevatorNumber:电梯编号Lable
+     * lables_elevatorCondition:电梯状态Lable
+     */
+    private ArrayList<JButton> btns_elevator1;
+    private ArrayList<JButton> btns_elevator2;
+    private ArrayList<JButton> btns_elevator3;
+    private ArrayList<JButton> btns_elevator4;
+    private ArrayList<JButton> btns_elevator5;
+    private ArrayList<JLabel> labels_elevatorNumber;
+    private ArrayList<JLabel> labels_elvatorCondition;
+
+    /**
+     * 创建panel_upDown;
+     * panel_upDown:上下行按钮组和楼层Lable;
+     */
+    private void createPanel_upDown() {
+        JPanel panel_upDown = new JPanel();
+        panel_upDown.setLayout(new GridLayout(20, 3));
+        btns_up = new ArrayList<>();
+        btns_down = new ArrayList<>();
+        lables_floor = new ArrayList<>();
+        for (int i = 20; i > 0; i--) {
+            btn = new JButton("Up");
+            panel_upDown.add(btn);
+            btns_up.add(btn);
+
+            btn = new JButton("Down");
+            panel_upDown.add(btn);
+            btns_down.add(btn);
+
+            label = new JLabel(Integer.toString(i));
+            panel_upDown.add(label);
+            lables_floor.add(label);
+        }
+        elevatorContainer.add(panel_upDown, BorderLayout.WEST);
+    }
+
+    /**
+     * 生成panel_inner;
+     * panel_inner:电梯内按钮和Lable;
+     */
+    private void createPanel_inner() {
+        JPanel panel_inner = new JPanel();
+        panel_inner.setLayout(new GridLayout(25, 5));
+        labels_elvatorCondition = new ArrayList<>();
+        labels_elevatorNumber = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            label = new JLabel((i + 1) + " 号电梯");
+            panel_inner.add(label);
+            labels_elevatorNumber.add(label);
+        }
+        for (int i = 0; i < 5; i++) {
+            label = new JLabel("1层");
+            panel_inner.add(label);
+            labels_elvatorCondition.add(label);
+        }
+
+        ArrayList<JButton> btns_inner = new ArrayList<>();
+        for (int i = 20; i > 0; i--) {
+            btn = new JButton(Integer.toString(i));
+            btns_inner.add(btn);
+        }
+        btn = new JButton("开门");
+        btns_inner.add(btn);
+        btn = new JButton("关门");
+        btns_inner.add(btn);
+        btn = new JButton("报警");
+        btns_inner.add(btn);
+
+        btns_elevator1 = new ArrayList<>(btns_inner);
+        btns_elevator2 = new ArrayList<>(btns_inner);
+        btns_elevator3 = new ArrayList<>(btns_inner);
+        btns_elevator4 = new ArrayList<>(btns_inner);
+        btns_elevator5 = new ArrayList<>(btns_inner);
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 23; j++) {
+                panel_inner.add(btns_elevator1.get(j));
+                panel_inner.add(btns_elevator2.get(j));
+                panel_inner.add(btns_elevator3.get(j));
+                panel_inner.add(btns_elevator4.get(j));
+                panel_inner.add(btns_elevator5.get(j));
+            }
+        }
+
+        elevatorContainer.add(panel_inner,BorderLayout.CENTER);
+    }
+
+    /**
+     * 创建elevatorMainView和elevatorContainer对象;
+     * 调用createPanel_upDown()
+     * 调用createPanel_inner()
+     */
+    public MainView() {
+        elevatorMainView = new JFrame(TITLE);
+        elevatorContainer = elevatorMainView.getContentPane();
         elevatorContainer.setLayout(new BorderLayout());
 
         /**
@@ -29,67 +136,51 @@ public class MainView {
         labelTile.setText("操作系统项目:电梯模拟线程调度");
         elevatorContainer.add(labelTile, BorderLayout.NORTH);
 
-        /**
-         * 生成上下行按钮组并添加相应Listener
-         * up_down_btns:上下行按钮组
-         */
-        JPanel up_down_btns = new JPanel();
-        up_down_btns.setLayout(new GridLayout(20, 3));
-        JButton btn;
-        for (int i = 20; i > 0; i--) {
-            btn = new JButton("Up");
-            btn.addActionListener(new ElevatorViewController());
-            up_down_btns.add(btn);
+        createPanel_upDown();
+        createPanel_inner();
+    }
 
-            btn = new JButton("Down");
-            up_down_btns.add(btn);
+    public ArrayList<JButton> getBtns_up() {
+        return btns_up;
+    }
 
-            btn = new JButton(Integer.toString(i));
-            up_down_btns.add(btn);
-        }
-        elevatorContainer.add(up_down_btns, BorderLayout.WEST);
+    public ArrayList<JButton> getBtns_down() {
+        return btns_down;
+    }
 
+    public ArrayList<JLabel> getLables_floor() {
+        return lables_floor;
+    }
 
-        /**
-         * 生成每部电梯内按钮
-         * inner_btns:电梯内按钮组
-         */
-        JPanel inner_btns = new JPanel();
-        inner_btns.setLayout(new GridLayout(25, 5));
-        for (int i = 0; i < 5; i++) {
-            btn = new JButton((i + 1) + " 号电梯");
-            inner_btns.add(btn);
-        }
-        for (int i = 0; i < 5; i++) {
-            btn = new JButton("1层");
-            inner_btns.add(btn);
-        }
-        for (int i = 20; i > 0; i--) {
-            for (int j = 0; j < 5; j++) {
-                btn = new JButton(Integer.toString(i));
-                inner_btns.add(btn);
-            }
-        }
-        for (int i = 0; i < 5; i++) {
-            btn = new JButton("开门");
-            inner_btns.add(btn);
-        }
-        for (int i = 0; i < 5; i++) {
-            btn = new JButton("关门");
-            inner_btns.add(btn);
-        }
-        for (int i = 0; i < 5; i++) {
-            btn = new JButton("警报");
-            inner_btns.add(btn);
-        }
-        elevatorContainer.add(inner_btns,BorderLayout.CENTER);
+    public ArrayList<JButton> getBtns_elevator1() {
+        return btns_elevator1;
+    }
 
-        /**
-         * 设置主界面大小
-         */
-        elevatorMainView.setVisible(true);
-        elevatorMainView.setSize(SIZE_WIDTH,SIZE_HEIGHT);
+    public ArrayList<JButton> getBtns_elevator2() {
+        return btns_elevator2;
+    }
 
+    public ArrayList<JButton> getBtns_elevator3() {
+        return btns_elevator3;
+    }
 
+    public ArrayList<JButton> getBtns_elevator4() {
+        return btns_elevator4;
+    }
+
+    public ArrayList<JButton> getBtns_elevator5() {
+        return btns_elevator5;
+    }
+
+    public ArrayList<JLabel> getLabels_elevatorNumber() {
+        return labels_elevatorNumber;
+    }
+
+    public ArrayList<JLabel> getLabels_elvatorCondition() {
+        return labels_elvatorCondition;
+    }
+
+    public Container getElevatorContainer() {
+        return elevatorContainer;
     }
 }
