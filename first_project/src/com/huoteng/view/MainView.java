@@ -2,7 +2,11 @@ package com.huoteng.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import com.huoteng.controller.*;
+import com.sun.deploy.uitoolkit.impl.awt.ui.DownloadWindow;
 
 
 /**
@@ -55,10 +59,15 @@ public class MainView {
         for (int i = 20; i > 0; i--) {
             btn = new JButton("Up");
             panel_upDown.add(btn);
+            final int FLOORUP = i;
+            btn.setActionCommand(i + ",up");
+            btn.addActionListener(new UpDownController());
             btns_up.add(btn);
 
             btn = new JButton("Down");
             panel_upDown.add(btn);
+            final int FLOORDOWN = i;
+            btn.addActionListener(new UpDownController());
             btns_down.add(btn);
 
             label = new JLabel(Integer.toString(i));
@@ -85,13 +94,21 @@ public class MainView {
             btnsList[j] = new ArrayList<>();
             for (int i = 20; i > 0; i--) {
                 btn = new JButton(Integer.toString(i));
+                btn.setActionCommand(Integer.toString(i));
+                btn.addActionListener(new ThreadElevatorController());
                 btnsList[j].add(btn);
             }
             btn = new JButton("开门");
+            btn.setActionCommand("open");
+            btn.addActionListener(new ThreadElevatorController());
             btnsList[j].add(btn);
             btn = new JButton("关门");
+            btn.setActionCommand("close");
+            btn.addActionListener(new ThreadElevatorController());
             btnsList[j].add(btn);
             btn = new JButton("报警");
+            btn.setActionCommand("alarm");
+            btn.addActionListener(new ThreadElevatorController());
             btnsList[j].add(btn);
         }
 
@@ -110,11 +127,36 @@ public class MainView {
             panel_inner.add(panel_oneElevator);
         }
 
-        elevatorMainView.add(panel_inner,BorderLayout.CENTER);
+        elevatorMainView.add(panel_inner,BorderLayout.EAST);
+    }
+
+    private void createPanel_condition() {
+        JPanel mainCondition = new JPanel();
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints s = new GridBagConstraints();
+        mainCondition.setLayout(layout);
+        for (int x = 5; x > 0; x--) {
+            label = new JLabel(x + "号电梯");
+            s.gridx = x;
+            s.gridy = 0;
+            layout.setConstraints(label,s);
+            mainCondition.add(label);
+            for (int y = 20; y > 0 ; y--) {
+                btn = new JButton("第" + y + "层");
+                s.gridx = x;
+                s.gridy = y;
+                layout.setConstraints(btn,s);
+//                btn.setMaximumSize(new Dimension(20,8));
+//                btn.setMargin(new Insets(0,5,0,0));//未知原因导致其不起作用
+//                btn.setBackground(new Color(255, 0, 0));//原因同上
+                mainCondition.add(btn);
+            }
+        }
+        elevatorMainView.add(mainCondition,BorderLayout.CENTER);
     }
 
     /**
-     * 创建elevatorMainView和elevatorContainer对象;
+     * 创建elevatorMainView
      * 调用createPanel_upDown()
      * 调用createPanel_inner()
      */
@@ -131,6 +173,7 @@ public class MainView {
 
         createPanel_upDown();
         createPanel_inner();
+        createPanel_condition();
     }
 
     public ArrayList<JButton> getBtns_up() {
