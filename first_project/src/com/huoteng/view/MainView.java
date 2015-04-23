@@ -39,11 +39,12 @@ public class MainView {
      * lables_elevatorCondition:电梯状态Lable
      */
     private ArrayList<JPanel> panels_elevator;
-    private ArrayList<JButton> btns_elevator1;
-    private ArrayList<JButton> btns_elevator2;
-    private ArrayList<JButton> btns_elevator3;
-    private ArrayList<JButton> btns_elevator4;
-    private ArrayList<JButton> btns_elevator5;
+//    private ArrayList<JButton> btns_elevator1 = new ArrayList<>();
+//    private ArrayList<JButton> btns_elevator2 = new ArrayList<>();
+//    private ArrayList<JButton> btns_elevator3 = new ArrayList<>();
+//    private ArrayList<JButton> btns_elevator4 = new ArrayList<>();
+//    private ArrayList<JButton> btns_elevator5 = new ArrayList<>();
+    private static ArrayList[] btnsList = new ArrayList[5];//{btns_elevator1,btns_elevator2,btns_elevator3,btns_elevator4,btns_elevator5};
     private ArrayList<JLabel> labels_elvatorCondition;
 
     /**
@@ -88,27 +89,26 @@ public class MainView {
         labels_elvatorCondition = new ArrayList<>();
         panels_elevator = new ArrayList<>();
 
-        ArrayList[] btnsList = {btns_elevator1,btns_elevator2,btns_elevator3,btns_elevator4,btns_elevator5};
-
+//        ArrayList[] btnsList = {btns_elevator1,btns_elevator2,btns_elevator3,btns_elevator4,btns_elevator5};
         for (int j = 0; j < 5; j++) {
             btnsList[j] = new ArrayList<>();
             for (int i = 20; i > 0; i--) {
                 btn = new JButton(Integer.toString(i));
                 btn.setActionCommand(Integer.toString(i));
-                btn.addActionListener(new ThreadElevatorController());
+                btn.addActionListener(new EveryElevatorController(j));
                 btnsList[j].add(btn);
             }
             btn = new JButton("开门");
             btn.setActionCommand("open");
-            btn.addActionListener(new ThreadElevatorController());
+            btn.addActionListener(new EveryElevatorController(j));
             btnsList[j].add(btn);
             btn = new JButton("关门");
             btn.setActionCommand("close");
-            btn.addActionListener(new ThreadElevatorController());
+            btn.addActionListener(new EveryElevatorController(j));
             btnsList[j].add(btn);
             btn = new JButton("报警");
             btn.setActionCommand("alarm");
-            btn.addActionListener(new ThreadElevatorController());
+            btn.addActionListener(new EveryElevatorController(j));
             btnsList[j].add(btn);
         }
 
@@ -130,6 +130,9 @@ public class MainView {
         elevatorMainView.add(panel_inner,BorderLayout.EAST);
     }
 
+    /**
+     * 生成MainView中间的电梯状态图
+     */
     private void createPanel_condition() {
         JPanel mainCondition = new JPanel();
         GridBagLayout layout = new GridBagLayout();
@@ -139,7 +142,7 @@ public class MainView {
             label = new JLabel(x + "号电梯");
             s.gridx = x;
             s.gridy = 0;
-            layout.setConstraints(label,s);
+            layout.setConstraints(label, s);
             mainCondition.add(label);
             for (int y = 20; y > 0 ; y--) {
                 btn = new JButton("第" + y + "层");
@@ -159,15 +162,13 @@ public class MainView {
      * 创建elevatorMainView
      * 调用createPanel_upDown()
      * 调用createPanel_inner()
+     * 调用createPanel_condition()
      */
     public MainView() {
         elevatorMainView = new JFrame(TITLE);
         elevatorMainView.setLayout(new BorderLayout());
 
-        /**
-         * 生成Title lable
-         */
-        JLabel labelTile = new JLabel();
+        JLabel labelTile = new JLabel();//生成Title lable
         labelTile.setText("操作系统项目:电梯模拟线程调度");
         elevatorMainView.add(labelTile, BorderLayout.NORTH);
 
@@ -176,47 +177,7 @@ public class MainView {
         createPanel_condition();
     }
 
-    public ArrayList<JButton> getBtns_up() {
-        return btns_up;
-    }
-
-    public ArrayList<JButton> getBtns_down() {
-        return btns_down;
-    }
-
-    public ArrayList<JLabel> getLables_floor() {
-        return lables_floor;
-    }
-
-    public ArrayList<JButton> getBtns_elevator1() {
-        return btns_elevator1;
-    }
-
-    public ArrayList<JButton> getBtns_elevator2() {
-        return btns_elevator2;
-    }
-
-    public ArrayList<JButton> getBtns_elevator3() {
-        return btns_elevator3;
-    }
-
-    public ArrayList<JButton> getBtns_elevator4() {
-        return btns_elevator4;
-    }
-
-    public ArrayList<JButton> getBtns_elevator5() {
-        return btns_elevator5;
-    }
-
-    public ArrayList<JLabel> getLabels_elvatorCondition() {
-        return labels_elvatorCondition;
-    }
-
-    public JFrame getElevatorMainView() {
-        return elevatorMainView;
-    }
-
-    public ArrayList<JPanel> getPanels_elevator() {
-        return panels_elevator;
+    public static ArrayList[] getBtnsList() {
+        return btnsList;
     }
 }

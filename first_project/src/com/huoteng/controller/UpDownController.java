@@ -12,17 +12,31 @@ public class UpDownController implements ActionListener, Runnable {
 
     private static ArrayList<GoFloor> goFloors = new ArrayList<>();
 
-    public static GoFloor getGoFloor() {
+    /**
+     * 得到要去的楼层
+     * @return
+     */
+    public static String getGoFloor() {
+        String order;
+        GoFloor temp;
         if (!goFloors.isEmpty()) {
-            return goFloors.remove(0);
+            temp = goFloors.remove(0);
+            order = Integer.toString(temp.condition);
+            order += Integer.toString(temp.floor).substring(1);
+            return order;
         } else {
             return null;
         }
     }
 
-    public static void setGoFloor(int floor, int condition) {
-        goFloors.add(new GoFloor(floor,condition));
-    }
+    /**
+     *
+     * @param floor
+     * @param condition
+     */
+//    public static void setGoFloor(int floor, int condition) {
+//        goFloors.add(new GoFloor(floor,condition));
+//    }
 
     /**
      * 点击按钮的响应事件
@@ -31,6 +45,7 @@ public class UpDownController implements ActionListener, Runnable {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        //需要改进，光靠run()无法实现任务分配
         String command = e.getActionCommand();
         //解析command
         int floor = Integer.parseInt(command.substring(0, 1));
@@ -51,6 +66,7 @@ public class UpDownController implements ActionListener, Runnable {
         while (true) {
             if (!goFloors.isEmpty()) {
                 //将任务分发给五个电梯线程
+                //核心算法
             } else {
                 //让线程休眠一段时间
             }

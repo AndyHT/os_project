@@ -11,8 +11,8 @@ public class ElevatorViewController {
 
     public ElevatorViewController() {
         MainView createMainView = new MainView();
-        createMainView.getElevatorMainView().setSize(800,600);
-        createMainView.getElevatorMainView().setVisible(true);
+//        createMainView.getElevatorMainView().setSize(800,600);
+//        createMainView.getElevatorMainView().setVisible(true);
     }
 
 }
