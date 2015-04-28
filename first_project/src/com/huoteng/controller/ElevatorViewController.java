@@ -1,9 +1,10 @@
 package com.huoteng.controller;
 
 
+import com.huoteng.module.ElevatorCondition;
 import com.huoteng.view.MainView;
 
-import java.awt.*;
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -14,42 +15,42 @@ public class ElevatorViewController extends Thread{
 
     private MainView mainView;
     private ArrayList[] innerBtnsList;
-    private EveryElevatorController elevator0;
-    private EveryElevatorController elevator1;
-    private EveryElevatorController elevator2;
-    private EveryElevatorController elevator3;
-    private EveryElevatorController elevator4;
+    private ArrayList<JButton> btns_up;
+    private ArrayList<JButton> btns_down;
+    private EveryElevatorController[] elevators = new EveryElevatorController[5];
 
     private UpDownController upDown;
 
     public ElevatorViewController() {
         mainView = new MainView();
         innerBtnsList = MainView.getBtnsList();
-        mainView.getElevatorMainView().setSize(800, 600);
+        btns_up = mainView.getBtns_up();
+        btns_down = mainView.getBtns_down();
+
+        mainView.getElevatorMainView().setSize(1024, 800);
         mainView.getElevatorMainView().setVisible(true);
         upDown = new UpDownController();
 
-        elevator0 = new EveryElevatorController(0);
-        elevator1 = new EveryElevatorController(1);
-        elevator2 = new EveryElevatorController(2);
-        elevator3 = new EveryElevatorController(3);
-        elevator4 = new EveryElevatorController(4);
+        for (int i = 0; i < elevators.length; i++) {
+            elevators[i] = new EveryElevatorController(i, mainView);
+        }
 
-        //为inner按钮增添Listener
-        for (Button btn : (ArrayList<Button>)innerBtnsList[0]) {
-            btn.addActionListener(elevator0);
+        //为上下行按钮添加Listener
+        for (JButton btn : btns_up) {
+            btn.addActionListener(upDown);
+//            btn.addMouseListener(upDown);
         }
-        for (Button btn : (ArrayList<Button>)innerBtnsList[1]) {
-            btn.addActionListener(elevator1);
+        for (JButton btn : btns_down) {
+            btn.addActionListener(upDown);
+//            btn.addMouseListener(upDown);
         }
-        for (Button btn : (ArrayList<Button>)innerBtnsList[2]) {
-            btn.addActionListener(elevator2);
-        }
-        for (Button btn : (ArrayList<Button>)innerBtnsList[3]) {
-            btn.addActionListener(elevator3);
-        }
-        for (Button btn : (ArrayList<Button>)innerBtnsList[4]) {
-            btn.addActionListener(elevator4);
+
+        //为inner按钮添加Listener
+        for (int i = 0; i < innerBtnsList.length; i++) {
+            for (int j = 0; j < innerBtnsList[i].size(); j++) {
+                JButton btn = (JButton)innerBtnsList[i].get(j);
+                btn.addActionListener(elevators[i]);
+            }
         }
     }
 
@@ -57,39 +58,86 @@ public class ElevatorViewController extends Thread{
     public void run() {
         //启动五部电梯
 
+        Thread[] elevatorThreads = new Thread[5];
 
-        Thread elevatorThread0 = new Thread(elevator0);
-        Thread elevatorThread1 = new Thread(elevator1);
-        Thread elevatorThread2 = new Thread(elevator2);
-        Thread elevatorThread3 = new Thread(elevator3);
-        Thread elevatorThread4 = new Thread(elevator4);
+        for (int i = 0; i < elevatorThreads.length; i++) {
+            elevatorThreads[i] = new Thread(elevators[i]);
+            elevatorThreads[i].start();
+        }
 
-        Thread upDownBtnThread = new Thread(upDown);
+        while (true) {
+            if (!UpDownController.taskIsEmpty()) {
+                //分配任务
+                //将任务分发给五个电梯线程
+                String order;
+                int floor;
+                int wantGo;
+                while ( !UpDownController.taskIsEmpty()) {
+                    order = UpDownController.getPressedFloor();
+                    wantGo = Integer.parseInt(order.substring(0, 1));
+                    floor = Integer.parseInt(order.substring(1));
+                    EveryElevatorController e;
+                    if ( ElevatorCondition.UP == wantGo) {
+                        //找到上行且所在楼层小于floor的电梯,将任务放入其任务队列
+                        e = findUp(floor);
+                    } else {
+                        //找到下行且所在楼层大于floor的电梯,将任务放入其任务队列
+                        e = findDown(floor);
+                    }
+                    if ( null == e) {
+                        e = findFreez();
+                    }
+                    //将任务放入e的任务队列
+                    e.addTask(floor);
+                }
+            } else {
+                try {
+                    sleep(EveryElevatorController.SLEEPTIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
-        elevatorThread0.start();
-        elevatorThread1.start();
-        elevatorThread2.start();
-        elevatorThread3.start();
-        elevatorThread4.start();
-        upDownBtnThread.start();
+    /**
+     * 找到上行且所在楼层小于floor的电梯
+     * @param floor
+     * @return
+     */
+    public EveryElevatorController findUp(int floor) {
+        for (EveryElevatorController e : elevators) {
+            if ( ElevatorCondition.UP == e.getElevatorCondition() && e.getElevatorCurrentrFloor() < floor) {
+                return e;
+            }
+        }
+        return null;
+    }
 
-        //将任务分发给五个电梯线程
-//        String order;
-//        int floor;
-//        int wantGo;
-//        while ( !UpDownController.taskIsEmpty()) {
-//            order = UpDownController.getPressedFloor();
-//            floor = Integer.parseInt(order.substring(0, 1));
-//            wantGo = Integer.parseInt(order.substring(1));
-//
-//            //如果被按的那一层有电梯，直接打开电梯门
-//            if (floor == elevator0.getElevatorCurrentrFloor()) {
-////                mainView
-//            } else if (floor == elevator1.getElevatorCurrentrFloor()) {
-//                elevator1.setTasks(floor);
-//            }
-//
-//        }
+    /**
+     * 找到下行且所在楼层大于floor的电梯
+     * @param floor
+     * @return
+     */
+    public EveryElevatorController findDown(int floor) {
+        for (EveryElevatorController e : elevators) {
+            if ( ElevatorCondition.DOWN == e.getElevatorCondition() && e.getElevatorCurrentrFloor() > floor) {
+                return e;
+            }
+        }
+        return null;
+    }
 
+    /**
+     * 找到静止的电梯
+     * @return
+     */
+    public EveryElevatorController findFreez() {
+        for (EveryElevatorController e : elevators) {
+            if ( ElevatorCondition.FREEZ == e.getElevatorCondition()) {
+                return e;
+            }
+        }
+        return elevators[0];//几乎不可能发生的情况
     }
 }

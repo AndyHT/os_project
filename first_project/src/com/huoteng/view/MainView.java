@@ -2,11 +2,7 @@ package com.huoteng.view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import com.huoteng.controller.*;
-import com.sun.deploy.uitoolkit.impl.awt.ui.DownloadWindow;
 
 
 /**
@@ -26,22 +22,14 @@ public class MainView {
      * 电梯外部按钮
      * up_btns:上行按钮
      * down_btns:下行按钮
-     * condition_btns:电梯状态Lable
      */
-    private ArrayList<JButton> btns_up;
-    private ArrayList<JButton> btns_down;
-    private ArrayList<JLabel> lables_floor;
+    private static ArrayList<JButton> btns_up;
+    private static ArrayList<JButton> btns_down;
 
-    /**
-     * 电梯内部按钮
-     * panels_elevator
-     * btns_elevator1:内部楼层按钮
-     * lables_elevatorNumber:电梯编号Lable
-     * lables_elevatorCondition:电梯状态Lable
-     */
-    private ArrayList<JPanel> panels_elevator;
-    private static ArrayList[] innerBtnsList = new ArrayList[5];
-    private ArrayList<JLabel> labels_elvatorCondition;
+    private static ArrayList[] innerBtnsList = new ArrayList[5];//电梯内部按钮Array
+    private static ArrayList<JLabel> labels_elvatorCondition; //电梯状态label
+
+    private static JLabel[][] labels_currentFloor = new JLabel[20][5];//电梯所在楼层
 
     /**
      * 创建panel_upDown;
@@ -52,19 +40,18 @@ public class MainView {
         panel_upDown.setLayout(new GridLayout(20, 3));
         btns_up = new ArrayList<>();
         btns_down = new ArrayList<>();
-        lables_floor = new ArrayList<>();
+        ArrayList<JLabel> lables_floor = new ArrayList<>();
         for (int i = 20; i > 0; i--) {
             btn = new JButton("Up");
+            btn.setOpaque(true);
             panel_upDown.add(btn);
-            final int FLOORUP = i;
             btn.setActionCommand(i + ",up");
-            btn.addActionListener(new UpDownController());
             btns_up.add(btn);
 
             btn = new JButton("Down");
+            btn.setOpaque(true);
             panel_upDown.add(btn);
-            final int FLOORDOWN = i;
-            btn.addActionListener(new UpDownController());
+            btn.setActionCommand(i + ",down");
             btns_down.add(btn);
 
             label = new JLabel(Integer.toString(i));
@@ -83,11 +70,18 @@ public class MainView {
         JPanel panel_oneElevator;
         panel_inner.setLayout(new GridLayout(1, 5));
         labels_elvatorCondition = new ArrayList<>();
-        panels_elevator = new ArrayList<>();
+        /*
+      电梯内部按钮
+      panels_elevator
+      btns_elevator1:内部楼层按钮
+      lables_elevatorNumber:电梯编号Lable
+      lables_elevatorCondition:电梯状态Lable
+     */
+        ArrayList<JPanel> panels_elevator = new ArrayList<>();
 
 //        ArrayList[] btnsList = {btns_elevator1,btns_elevator2,btns_elevator3,btns_elevator4,btns_elevator5};
         for (int j = 0; j < 5; j++) {
-            innerBtnsList[j] = new ArrayList<>();
+            innerBtnsList[j] = new ArrayList<JButton>();
             for (int i = 20; i > 0; i--) {
                 btn = new JButton(Integer.toString(i));
                 btn.setActionCommand(Integer.toString(i));
@@ -141,17 +135,22 @@ public class MainView {
             layout.setConstraints(label, s);
             mainCondition.add(label);
             for (int y = 20; y > 0 ; y--) {
-                btn = new JButton("第" + y + "层");
+                label = new JLabel("第" + (21-y) + "层");
+                if (y == 20 ) {
+                    label.setBackground(Color.RED);
+                }
+                label.setOpaque(true);
+                label.setBorder(BorderFactory.createEtchedBorder());
+                label.setPreferredSize(new Dimension(50, 30));
+                labels_currentFloor[20-y][5-x] = label;
+//                labels_currentFloor[5-x].
                 s.gridx = x;
                 s.gridy = y;
-                layout.setConstraints(btn,s);
-//                btn.setMaximumSize(new Dimension(20,8));
-//                btn.setMargin(new Insets(0,5,0,0));//未知原因导致其不起作用
-//                btn.setBackground(new Color(255, 0, 0));//原因同上
-                mainCondition.add(btn);
+                layout.setConstraints(label,s);
+                mainCondition.add(label);
             }
         }
-        elevatorMainView.add(mainCondition,BorderLayout.CENTER);
+        elevatorMainView.add(mainCondition, BorderLayout.CENTER);
     }
 
     /**
@@ -188,4 +187,13 @@ public class MainView {
     public ArrayList<JButton> getBtns_down() {
         return btns_down;
     }
+
+    public ArrayList<JLabel> getLabels_elvatorCondition() {
+        return labels_elvatorCondition;
+    }
+
+    public JLabel[][] getLabels_currentFloor() {
+        return labels_currentFloor;
+    }
+
 }
