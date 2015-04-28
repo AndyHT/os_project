@@ -136,14 +136,11 @@ public class MainView {
             mainCondition.add(label);
             for (int y = 20; y > 0 ; y--) {
                 label = new JLabel("第" + (21-y) + "层");
-                if (y == 20 ) {
-                    label.setBackground(Color.RED);
-                }
+                label.setBackground(Color.LIGHT_GRAY);
                 label.setOpaque(true);
                 label.setBorder(BorderFactory.createEtchedBorder());
                 label.setPreferredSize(new Dimension(50, 30));
-                labels_currentFloor[20-y][5-x] = label;
-//                labels_currentFloor[5-x].
+                labels_currentFloor[20-y][x-1] = label;
                 s.gridx = x;
                 s.gridy = y;
                 layout.setConstraints(label,s);

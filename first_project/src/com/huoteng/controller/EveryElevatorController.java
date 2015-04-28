@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 
 /**
+ *
  * Created by huoteng on 4/23/15.
  */
 public class EveryElevatorController implements Runnable, ActionListener{
@@ -48,6 +49,10 @@ public class EveryElevatorController implements Runnable, ActionListener{
 
         elevators = mainView.getLabels_currentFloor();
 
+        for (int i = 0; i < 5; i++) {
+            elevators[0][i].setBackground(Color.RED);
+        }
+
         labels_condition = mainView.getLabels_elvatorCondition();
 
     }
@@ -70,19 +75,19 @@ public class EveryElevatorController implements Runnable, ActionListener{
                 if ( goFloor < elevatorCurrentFloor) {
                     //电梯上行
                     elevatorCondition = ElevatorCondition.UP;
-                    elevatorMove(elevatorCurrentFloor, goFloor);
-                    btn = (JButton)btns_upDown[0].get(goFloor);
-                    btn.setBackground(Color.LIGHT_GRAY);
+//                    elevatorMove(elevatorCurrentFloor, goFloor);
+//                    btn = (JButton)btns_upDown[0].get(goFloor);
+//                    btn.setBackground(Color.LIGHT_GRAY);
                 } else if ( goFloor > elevatorCurrentFloor) {
                     //电梯下行
                     elevatorCondition = ElevatorCondition.DOWN;
-                    elevatorMove(elevatorCurrentFloor, goFloor);
-                    btn = (JButton)btns_upDown[1].get(goFloor);
-                    btn.setBackground(Color.LIGHT_GRAY);
+//                    elevatorMove(elevatorCurrentFloor, goFloor);
+//                    btn = (JButton)btns_upDown[1].get(goFloor);
+//                    btn.setBackground(Color.LIGHT_GRAY);
                 } else {
                     elevatorCondition = ElevatorCondition.FREEZ;
                 }
-
+                elevatorMove(elevatorCurrentFloor, goFloor);
                 labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_OPEN);
                 elevatorSleep();
                 labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
@@ -97,25 +102,28 @@ public class EveryElevatorController implements Runnable, ActionListener{
     }
 
     public void elevatorMove(int currentFloor, int goFloor) {
-//        ArrayList<JLabel> labels = elevators[elevatorNum];
-//        System.out.println(labels.size());//size为1,有问题
         if ( currentFloor < goFloor) {
             labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_UP);
-            for ( int i = currentFloor; i <= goFloor; i++) {
-//                elevators[i][elevatorNum].setForeground(Color.YELLOW);
-                elevators[i][elevatorNum].setBackground(Color.RED);//数组越界
+            System.out.println(goFloor + ";");
+
+            for ( int i = currentFloor; i < goFloor; i++) {
+                elevators[i-1][elevatorNum].setBackground(Color.RED);
+                elevatorCurrentFloor = i;
                 elevatorSleep();
-                elevators[i][elevatorNum].setBackground(Color.GRAY);
+                elevators[i-1][elevatorNum].setBackground(Color.LIGHT_GRAY);
             }
         } else {
             labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_DOWN);
-            for ( int i = currentFloor; i >= goFloor; i--) {
-                elevators[i][elevatorNum].setBackground(Color.RED);
+            for ( int i = currentFloor; i > goFloor; i--) {
+                elevators[i-1][elevatorNum].setBackground(Color.RED);
+                elevatorCurrentFloor = i;
                 elevatorSleep();
-                elevators[i][elevatorNum].setBackground(Color.GRAY);
+                elevators[i-1][elevatorNum].setBackground(Color.LIGHT_GRAY);
             }
         }
         elevatorCondition = ElevatorCondition.FREEZ;
+        elevators[elevatorCurrentFloor][elevatorNum].setBackground(Color.RED);
+        System.out.println(elevatorCurrentFloor);//elevatorCurrentFloor有问题
     }
 
     public void elevatorSleep() {
