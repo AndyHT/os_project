@@ -1,33 +1,41 @@
 package com.huoteng.controller;
 
-import com.huoteng.module.EveryElevatorTaskQueue;
+import com.huoteng.module.ElevatorCondition;
 import com.huoteng.view.MainView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by huoteng on 4/23/15.
  */
-public class EveryElevatorController implements Runnable,ActionListener{
+public class EveryElevatorController implements Runnable, ActionListener{
 
     private static final int SLEEPTIME = 500;
 
-    private static int elevatorNum;
+    private ArrayList<Integer> task;
 
-    private EveryElevatorTaskQueue tasks;
+    private int elevatorNum;//电梯编号
 
+    private int elevatorCondition;//电梯状态
+
+    private int elevatorCurrentFloor;//电梯所在楼层
 
     /**
-     * 构造函数设置电梯编号
+     * 构造函数设置电梯编号和状态
+     * 0静止1上2下
      * @param elevatorNum
      */
     public EveryElevatorController(int elevatorNum) {
         this.elevatorNum = elevatorNum;
-        tasks = new EveryElevatorTaskQueue(elevatorNum);
+        this.elevatorCurrentFloor = 1;
+        this.elevatorCondition = ElevatorCondition.FREEZ;
+
+        task = new ArrayList<>();
+
     }
 
     /**
@@ -40,11 +48,12 @@ public class EveryElevatorController implements Runnable,ActionListener{
     public void run() {
         int goFloor;
         JButton btn;
+        ArrayList[] btnsList;
         while (true) {
-            if (!tasks.queueIsEmpty()) {
+            if (!task.isEmpty()) {
                 //执行任务
-                goFloor = tasks.getTask(0);
-                ArrayList[] btnsList = MainView.getBtnsList();
+                goFloor = task.remove(0);
+                btnsList = MainView.getBtnsList();
                 for (int i = 0;i < btnsList[elevatorNum].size(); i++) {
                     btn = (JButton)btnsList[elevatorNum].get(i);
                     btn.setBackground(Color.RED);
@@ -67,12 +76,12 @@ public class EveryElevatorController implements Runnable,ActionListener{
     }
 
     /**
-     * 点击电梯内按钮的响应事件
-     * 将任务放入队列
+     * inner按钮的Listener
      * @param e
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        //将任务放入队列
         String command = e.getActionCommand();
         int floor;
         switch (command) {
@@ -85,9 +94,24 @@ public class EveryElevatorController implements Runnable,ActionListener{
             default:
                 if (command != null) {
                     floor = Integer.parseInt(command);
-                    tasks.addTask(floor);
+                    //将任务放到对应电梯的任务队列
+                    task.add(floor);
                 }
         }
     }
+
+    public int getElevatorNum() {
+        return elevatorNum;
+    }
+
+    public int getElevatorCondition() {
+        return elevatorCondition;
+    }
+
+    public int getElevatorCurrentrFloor() {
+        return elevatorCurrentFloor;
+    }
+
+
 }
 

@@ -1,5 +1,7 @@
 package com.huoteng.controller;
 
+import com.huoteng.module.ElevatorCondition;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -8,35 +10,21 @@ import java.util.ArrayList;
  * 管理外部Up和Down按钮产生的任务队列
  * Created by huoteng on 4/23/15.
  */
-public class UpDownController implements ActionListener, Runnable {
+public class UpDownController implements ActionListener,Runnable {
 
-    private static ArrayList<GoFloor> goFloors = new ArrayList<>();
+    private static ArrayList<pressedFloor> pressedFloors = new ArrayList<>();
 
     /**
-     * 得到要去的楼层
-     * @return
+     * 得到按钮被按的楼层和要去的方向，0静止1上2下
+     * @return 被按下的楼层和要去的方向，如:110,表示下楼，被按下的按钮位于十层
      */
-    public static String getGoFloor() {
-        String order;
-        GoFloor temp;
-        if (!goFloors.isEmpty()) {
-            temp = goFloors.remove(0);
-            order = Integer.toString(temp.condition);
-            order += Integer.toString(temp.floor).substring(1);
-            return order;
-        } else {
-            return null;
-        }
+    public static String getPressedFloor() {
+        pressedFloor temp = pressedFloors.remove(0);
+        String order = Integer.toString(temp.wantGo);
+        order += Integer.toString(temp.floor);
+
+        return order;
     }
-
-    /**
-     *
-     * @param floor
-     * @param condition
-     */
-//    public static void setGoFloor(int floor, int condition) {
-//        goFloors.add(new GoFloor(floor,condition));
-//    }
 
     /**
      * 点击按钮的响应事件
@@ -45,42 +33,47 @@ public class UpDownController implements ActionListener, Runnable {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        //需要改进，光靠run()无法实现任务分配
         String command = e.getActionCommand();
         //解析command
         int floor = Integer.parseInt(command.substring(0, 1));
-        int condition;
+        int want;
         if (command.substring(2,4).equals("up")) {
-            condition = 0;
+            want = ElevatorCondition.UP;
         } else {
-            condition = 1;
+            want = ElevatorCondition.DOWN;
         }
-        goFloors.add(new GoFloor(floor, condition));
+        pressedFloors.add(new pressedFloor(floor, want));
     }
 
     /**
-     * run()分配任务到每个电梯
+     * 实现任务分配
      */
     @Override
     public void run() {
         while (true) {
-            if (!goFloors.isEmpty()) {
-                //将任务分发给五个电梯线程
-                //核心算法
+            if (pressedFloors.isEmpty()) {
+                //分配任务
             } else {
-                //让线程休眠一段时间
+                //sleep
             }
         }
-
     }
+
+    /**
+     * @return 队列是否为空
+     */
+    public static boolean taskIsEmpty() {
+        return pressedFloors.isEmpty();
+    }
+
 }
 
-class GoFloor {
+class pressedFloor {
     int floor;
-    int condition;//0 Up    1 Down
+    int wantGo;
 
-    public GoFloor(int floor, int condition) {
+    public pressedFloor(int floor, int wantGo) {
         this.floor = floor;
-        this.condition = condition;
+        this.wantGo = wantGo;
     }
 }
