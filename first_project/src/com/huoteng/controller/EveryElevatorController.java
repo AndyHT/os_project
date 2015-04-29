@@ -17,25 +17,41 @@ public class EveryElevatorController implements Runnable, ActionListener{
 
     public static final int SLEEPTIME = 500;
 
+    /**
+     * 任务队列
+     */
     private ArrayList<Integer> task;
 
-    private int elevatorNum;//电梯编号
+    /**
+     * 电梯编号
+     */
+    private int elevatorNum;
 
-    private int elevatorCondition;//电梯状态
+    /**
+     * 电梯状态
+     */
+    private int elevatorCondition;
 
-    private int elevatorCurrentFloor;//电梯所在楼层
+    /**
+     * 电梯所在楼层
+     */
+    private int elevatorCurrentFloor;
 
+    /**
+     * 电梯状态label
+     */
     private ArrayList<JLabel> labels_condition;
 
-    private ArrayList<JButton>[] btns_upDown = new ArrayList[2];
-
+    /**
+     * 电梯运行图label
+     */
     private JLabel[][] elevators;
 
 
     /**
      * 构造函数设置电梯编号和状态
      * 0静止1上2下
-     * @param elevatorNum
+     * @param elevatorNum 设置的电梯编号
      */
     public EveryElevatorController(int elevatorNum, MainView mainView) {
         this.elevatorNum = elevatorNum;
@@ -43,9 +59,6 @@ public class EveryElevatorController implements Runnable, ActionListener{
         this.elevatorCondition = ElevatorCondition.FREEZ;
 
         task = new ArrayList<>();
-
-        btns_upDown[0] = mainView.getBtns_up();
-        btns_upDown[1] = mainView.getBtns_down();
 
         elevators = mainView.getLabels_currentFloor();
 
@@ -66,33 +79,46 @@ public class EveryElevatorController implements Runnable, ActionListener{
     @Override
     public void run() {
         int goFloor;
-        JButton btn;
+//        ArrayList<Integer> goFloor = new ArrayList<>();
         while (true) {
             if (!task.isEmpty()) {
                 //执行任务
                 goFloor = task.remove(0);
 
-                if ( goFloor < elevatorCurrentFloor) {
-                    //电梯上行
+                if (goFloor < elevatorCurrentFloor) {
                     elevatorCondition = ElevatorCondition.UP;
-//                    elevatorMove(elevatorCurrentFloor, goFloor);
-//                    btn = (JButton)btns_upDown[0].get(goFloor);
-//                    btn.setBackground(Color.LIGHT_GRAY);
-                } else if ( goFloor > elevatorCurrentFloor) {
-                    //电梯下行
-                    elevatorCondition = ElevatorCondition.DOWN;
-//                    elevatorMove(elevatorCurrentFloor, goFloor);
-//                    btn = (JButton)btns_upDown[1].get(goFloor);
-//                    btn.setBackground(Color.LIGHT_GRAY);
                 } else {
-                    elevatorCondition = ElevatorCondition.FREEZ;
+                    elevatorCondition = ElevatorCondition.DOWN;
                 }
-                elevatorMove(elevatorCurrentFloor, goFloor);
-                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_OPEN);
-                elevatorSleep();
-                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
-                elevatorSleep();
-                labels_condition.get(elevatorNum).setText(goFloor + "层");
+
+                switch (elevatorCondition) {
+                    case ElevatorCondition.UP:
+                        elevatorMove(elevatorCurrentFloor, goFloor);
+                        break;
+                    case ElevatorCondition.DOWN:
+                        elevatorMove(elevatorCurrentFloor, goFloor);
+                        break;
+                    default:
+                        elevatorCondition = ElevatorCondition.FREEZ;
+                        break;
+                }
+//                if ( goFloor < elevatorCurrentFloor) {
+                    //电梯上行
+//                    elevatorCondition = ElevatorCondition.UP;
+//                    elevatorMove(elevatorCurrentFloor, goFloor);
+//                } else if ( goFloor > elevatorCurrentFloor) {
+                    //电梯下行
+//                    elevatorCondition = ElevatorCondition.DOWN;
+//                    elevatorMove(elevatorCurrentFloor, goFloor);
+//                } else {
+//                    elevatorCondition = ElevatorCondition.FREEZ;
+//                }
+//                elevatorMove(elevatorCurrentFloor, goFloor);
+//                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_OPEN);
+//                elevatorSleep();
+//                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
+//                elevatorSleep();
+//                labels_condition.get(elevatorNum).setText(goFloor + "层");
 
             } else {
                 //休眠
@@ -101,29 +127,45 @@ public class EveryElevatorController implements Runnable, ActionListener{
         }
     }
 
-    public void elevatorMove(int currentFloor, int goFloor) {
-        if ( currentFloor < goFloor) {
-            labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_UP);
-            System.out.println(goFloor + ";");
+    /**
+     * 电梯运行Method
+     * 还需要在运行过程中不停检查任务队列，need fix this bug
+     * @param currentFloor 电梯当前楼层
+     * @param goFloor 电梯要去的楼层
+     */
+    private void elevatorMove(int currentFloor, int goFloor) {
+        switch (elevatorCondition) {
+            case ElevatorCondition.UP:
+                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_UP);
 
-            for ( int i = currentFloor; i < goFloor; i++) {
-                elevators[i-1][elevatorNum].setBackground(Color.RED);
-                elevatorCurrentFloor = i;
-                elevatorSleep();
-                elevators[i-1][elevatorNum].setBackground(Color.LIGHT_GRAY);
-            }
-        } else {
-            labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_DOWN);
-            for ( int i = currentFloor; i > goFloor; i--) {
-                elevators[i-1][elevatorNum].setBackground(Color.RED);
-                elevatorCurrentFloor = i;
-                elevatorSleep();
-                elevators[i-1][elevatorNum].setBackground(Color.LIGHT_GRAY);
-            }
+                for ( int i = currentFloor; i < goFloor; i++) {
+                    elevators[i-1][elevatorNum].setBackground(Color.RED);
+                    elevatorCurrentFloor = i;
+                    elevatorSleep();
+                    elevators[i-1][elevatorNum].setBackground(Color.LIGHT_GRAY);
+                }
+                break;
+            case ElevatorCondition.DOWN:
+                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_DOWN);
+                for ( int i = currentFloor; i > goFloor; i--) {
+                    elevators[i-1][elevatorNum].setBackground(Color.RED);
+                    elevatorCurrentFloor = i;
+                    elevatorSleep();
+                    elevators[i-1][elevatorNum].setBackground(Color.LIGHT_GRAY);
+                }
+                break;
+            default:
+                break;
         }
+
         elevatorCondition = ElevatorCondition.FREEZ;
         elevators[elevatorCurrentFloor][elevatorNum].setBackground(Color.RED);
         System.out.println(elevatorCurrentFloor);//elevatorCurrentFloor有问题
+        labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_OPEN);
+        elevatorSleep();
+        labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
+        elevatorSleep();
+        labels_condition.get(elevatorNum).setText(goFloor + "层");
     }
 
     public void elevatorSleep() {
@@ -136,7 +178,7 @@ public class EveryElevatorController implements Runnable, ActionListener{
 
     /**
      * inner按钮的Listener
-     * @param e
+     * @param e ActionListener
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -157,11 +199,9 @@ public class EveryElevatorController implements Runnable, ActionListener{
             case "alarm":
                 break;
             default:
-                if (command != null) {
-                    floor = Integer.parseInt(command);
-                    //将任务放到对应电梯的任务队列
-                    addTask(floor);
-                }
+                floor = Integer.parseInt(command);
+                //将任务放到对应电梯的任务队列
+                addTask(floor);
         }
     }
 
@@ -170,9 +210,9 @@ public class EveryElevatorController implements Runnable, ActionListener{
     }
 
 
-    public int getElevatorNum() {
-        return elevatorNum;
-    }
+//    public int getElevatorNum() {
+//        return elevatorNum;
+//    }
 
     public int getElevatorCondition() {
         return elevatorCondition;
@@ -181,7 +221,5 @@ public class EveryElevatorController implements Runnable, ActionListener{
     public int getElevatorCurrentrFloor() {
         return elevatorCurrentFloor;
     }
-
-
 }
 

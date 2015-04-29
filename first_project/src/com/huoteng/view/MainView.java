@@ -79,26 +79,21 @@ public class MainView {
      */
         ArrayList<JPanel> panels_elevator = new ArrayList<>();
 
-//        ArrayList[] btnsList = {btns_elevator1,btns_elevator2,btns_elevator3,btns_elevator4,btns_elevator5};
         for (int j = 0; j < 5; j++) {
             innerBtnsList[j] = new ArrayList<JButton>();
             for (int i = 20; i > 0; i--) {
                 btn = new JButton(Integer.toString(i));
                 btn.setActionCommand(Integer.toString(i));
-//                btn.addActionListener(new ElevatorBtnListener(j));
                 innerBtnsList[j].add(btn);
             }
             btn = new JButton("开门");
             btn.setActionCommand("open");
-//            btn.addActionListener(new ElevatorBtnListener(j));
             innerBtnsList[j].add(btn);
             btn = new JButton("关门");
             btn.setActionCommand("close");
-//            btn.addActionListener(new ElevatorBtnListener(j));
             innerBtnsList[j].add(btn);
             btn = new JButton("报警");
             btn.setActionCommand("alarm");
-//            btn.addActionListener(new ElevatorBtnListener(j));
             innerBtnsList[j].add(btn);
         }
 

@@ -2,6 +2,7 @@ package com.huoteng.module;
 
 /**
  * Created by huoteng on 4/24/15.
+ * 电梯状态常量
  */
 public class ElevatorCondition {
     //0静止1上2下

@@ -1,7 +1,6 @@
 package com.huoteng.controller;
 
 import com.huoteng.module.ElevatorCondition;
-import com.huoteng.view.MainView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +30,7 @@ public class UpDownController implements ActionListener{
     /**
      * 点击按钮的响应事件
      * 将任务放入队列
-     * @param e
+     * @param e ActionEvent
      */
     @Override
     public void actionPerformed(ActionEvent e) {
