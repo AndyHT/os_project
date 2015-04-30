@@ -1,7 +1,5 @@
 package com.huoteng.controller;
 
-import com.huoteng.module.ElevatorCondition;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -42,26 +40,6 @@ public class UpDownController implements ActionListener{
         int wantGo = Integer.parseInt(command.substring(0, 1));
         btn.setForeground(Color.YELLOW);
         pressedFloors.add(new pressedFloor(floor, wantGo));
-//        switch (wantGo) {
-//            case ElevatorCondition.UP:
-//                btn.setForeground(Color.YELLOW);
-//                pressedFloors.add(new pressedFloor(floor, wantGo));
-//                break;
-//            case ElevatorCondition.DOWN:
-//                btn.setForeground(Color.YELLOW);
-//                pressedFloors.add(new pressedFloor(floor, wantGo));
-//                break;
-//            default:
-//                break;
-//        }
-//        if (want.equals("up")) {
-//            wantGo = ElevatorCondition.UP;
-//            btn.setForeground(Color.YELLOW);
-//        } else {
-//            wantGo = ElevatorCondition.DOWN;
-//            btn.setForeground(Color.YELLOW);
-//        }
-//        pressedFloors.add(new pressedFloor(floor, wantGo));
     }
 
 

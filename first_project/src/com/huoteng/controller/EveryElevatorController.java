@@ -48,7 +48,7 @@ public class EveryElevatorController implements Runnable, ActionListener{
     private JLabel[][] elevators;
 
     /**
-     * 电梯上下行按钮组
+     * 电梯上下行按钮
      */
     private ArrayList<JButton> btns_up;
     private ArrayList<JButton> btns_down;
@@ -87,7 +87,6 @@ public class EveryElevatorController implements Runnable, ActionListener{
     @Override
     public void run() {
         int goFloor;
-//        ArrayList<Integer> goFloor = new ArrayList<>();
         while (true) {
             if (!task.isEmpty()) {
                 //执行任务
@@ -102,43 +101,24 @@ public class EveryElevatorController implements Runnable, ActionListener{
                 switch (elevatorCondition) {
                     case ElevatorCondition.UP:
                         elevatorMoveUp(elevatorCurrentFloor, goFloor);
-                        btns_up.get(goFloor-1).setForeground(Color.BLACK);
+                        btns_up.get(19-elevatorCurrentFloor).setForeground(Color.BLACK);
                         break;
                     case ElevatorCondition.DOWN:
                         elevatorMoveDown(elevatorCurrentFloor, goFloor);
-                        btns_down.get(goFloor-1).setForeground(Color.BLACK);
+                        btns_down.get(19-elevatorCurrentFloor).setForeground(Color.BLACK);
                         break;
                     default:
                         elevatorCondition = ElevatorCondition.FREEZ;
                         break;
                 }
-//                if ( goFloor < elevatorCurrentFloor) {
-//                    电梯上行
-//                    elevatorCondition = ElevatorCondition.UP;
-//                    elevatorMove(elevatorCurrentFloor, goFloor);
-//                } else if ( goFloor > elevatorCurrentFloor) {
-//                    电梯下行
-//                    elevatorCondition = ElevatorCondition.DOWN;
-//                    elevatorMove(elevatorCurrentFloor, goFloor);
-//                } else {
-//                    elevatorCondition = ElevatorCondition.FREEZ;
-//                }
-//                elevatorMove(elevatorCurrentFloor, goFloor);
-//                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_OPEN);
-//                elevatorSleep();
-//                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
-//                elevatorSleep();
-//                labels_condition.get(elevatorNum).setText(goFloor + "层");
-
             } else {
-                //休眠
                 elevatorSleep();
             }
         }
     }
 
     /**
-     * 还需要在运行过程中不停检查任务队列，need fix this bug
+     * 电梯上行
      * @param currentFloor 电梯当前楼层
      * @param goFloor 电梯要去的楼层
      */
@@ -167,9 +147,9 @@ public class EveryElevatorController implements Runnable, ActionListener{
     }
 
     /**
-     *
-     * @param currentFloor
-     * @param goFloor
+     *电梯下行
+     * @param currentFloor 电梯当前楼层
+     * @param goFloor 目标楼层
      */
     private void elevatorMoveDown(int currentFloor, int goFloor) {
         labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_DOWN);
@@ -183,7 +163,7 @@ public class EveryElevatorController implements Runnable, ActionListener{
 
         elevatorCondition = ElevatorCondition.FREEZ;
         elevators[elevatorCurrentFloor][elevatorNum].setBackground(Color.RED);
-        System.out.println(elevatorCurrentFloor);
+//        System.out.println(elevatorCurrentFloor);
         labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_OPEN);
         elevatorSleep();
         labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
@@ -207,12 +187,15 @@ public class EveryElevatorController implements Runnable, ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         //将任务放入队列
+        JButton btn = (JButton)e.getSource();
         String command = e.getActionCommand();
         int floor;
         switch (command) {
             case "open":
                 if (ElevatorCondition.FREEZ == elevatorCondition) {
                     labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_OPEN);
+                    elevatorSleep();
+                    labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
                 }
                 break;
             case "close":
