@@ -76,17 +76,17 @@ public class ElevatorViewController extends Thread{
                     wantGo = Integer.parseInt(order.substring(0, 1));
                     floor = Integer.parseInt(order.substring(1));
 
-                    //将按钮还原为黑色
-                    switch (wantGo) {
-                        case ElevatorCondition.UP:
-                            btns_up.get(floor).setForeground(Color.BLACK);
-                            break;
-                        case ElevatorCondition.DOWN:
-                            btns_down.get(floor).setForeground(Color.BLACK);
-                            break;
-                        default:
-                            break;
-                    }
+//                    将按钮还原为黑色
+//                    switch (wantGo) {
+//                        case ElevatorCondition.UP:
+//                            btns_up.get(floor).setForeground(Color.BLACK);
+//                            break;
+//                        case ElevatorCondition.DOWN:
+//                            btns_down.get(floor).setForeground(Color.BLACK);
+//                            break;
+//                        default:
+//                            break;
+//                    }
 
                     EveryElevatorController e;
                     if ( ElevatorCondition.UP == wantGo) {

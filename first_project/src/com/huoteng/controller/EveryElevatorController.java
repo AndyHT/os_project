@@ -47,6 +47,12 @@ public class EveryElevatorController implements Runnable, ActionListener{
      */
     private JLabel[][] elevators;
 
+    /**
+     * 电梯上下行按钮组
+     */
+    private ArrayList<JButton> btns_up;
+    private ArrayList<JButton> btns_down;
+
 
     /**
      * 构造函数设置电梯编号和状态
@@ -68,6 +74,8 @@ public class EveryElevatorController implements Runnable, ActionListener{
 
         labels_condition = mainView.getLabels_elvatorCondition();
 
+        btns_up = mainView.getBtns_up();
+        btns_down = mainView.getBtns_down();
     }
 
     /**
@@ -85,7 +93,7 @@ public class EveryElevatorController implements Runnable, ActionListener{
                 //执行任务
                 goFloor = task.remove(0);
 
-                if (goFloor < elevatorCurrentFloor) {
+                if (goFloor > elevatorCurrentFloor) {
                     elevatorCondition = ElevatorCondition.UP;
                 } else {
                     elevatorCondition = ElevatorCondition.DOWN;
@@ -94,20 +102,22 @@ public class EveryElevatorController implements Runnable, ActionListener{
                 switch (elevatorCondition) {
                     case ElevatorCondition.UP:
                         elevatorMove(elevatorCurrentFloor, goFloor);
+                        btns_up.get(goFloor-1).setForeground(Color.BLACK);
                         break;
                     case ElevatorCondition.DOWN:
                         elevatorMove(elevatorCurrentFloor, goFloor);
+                        btns_down.get(goFloor-1).setForeground(Color.BLACK);
                         break;
                     default:
                         elevatorCondition = ElevatorCondition.FREEZ;
                         break;
                 }
 //                if ( goFloor < elevatorCurrentFloor) {
-                    //电梯上行
+//                    电梯上行
 //                    elevatorCondition = ElevatorCondition.UP;
 //                    elevatorMove(elevatorCurrentFloor, goFloor);
 //                } else if ( goFloor > elevatorCurrentFloor) {
-                    //电梯下行
+//                    电梯下行
 //                    elevatorCondition = ElevatorCondition.DOWN;
 //                    elevatorMove(elevatorCurrentFloor, goFloor);
 //                } else {
@@ -147,6 +157,7 @@ public class EveryElevatorController implements Runnable, ActionListener{
                 break;
             case ElevatorCondition.DOWN:
                 labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_DOWN);
+
                 for ( int i = currentFloor; i > goFloor; i--) {
                     elevators[i-1][elevatorNum].setBackground(Color.RED);
                     elevatorCurrentFloor = i;
@@ -165,7 +176,7 @@ public class EveryElevatorController implements Runnable, ActionListener{
         elevatorSleep();
         labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
         elevatorSleep();
-        labels_condition.get(elevatorNum).setText(goFloor + "层");
+        labels_condition.get(elevatorNum).setText(elevatorCurrentFloor+1 + "层");
     }
 
     public void elevatorSleep() {

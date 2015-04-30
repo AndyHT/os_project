@@ -38,16 +38,30 @@ public class UpDownController implements ActionListener{
         JButton btn = (JButton)e.getSource();
         String command = e.getActionCommand();
         //解析command
-        int floor = Integer.parseInt(command.substring(0, 1));
-        int want;
-        if (command.substring(2,4).equals("up")) {
-            want = ElevatorCondition.UP;
-            btn.setForeground(Color.YELLOW);
-        } else {
-            want = ElevatorCondition.DOWN;
-            btn.setForeground(Color.YELLOW);
-        }
-        pressedFloors.add(new pressedFloor(floor, want));
+        int floor = Integer.parseInt(command.substring(2));
+        int wantGo = Integer.parseInt(command.substring(0, 1));
+        btn.setForeground(Color.YELLOW);
+        pressedFloors.add(new pressedFloor(floor, wantGo));
+//        switch (wantGo) {
+//            case ElevatorCondition.UP:
+//                btn.setForeground(Color.YELLOW);
+//                pressedFloors.add(new pressedFloor(floor, wantGo));
+//                break;
+//            case ElevatorCondition.DOWN:
+//                btn.setForeground(Color.YELLOW);
+//                pressedFloors.add(new pressedFloor(floor, wantGo));
+//                break;
+//            default:
+//                break;
+//        }
+//        if (want.equals("up")) {
+//            wantGo = ElevatorCondition.UP;
+//            btn.setForeground(Color.YELLOW);
+//        } else {
+//            wantGo = ElevatorCondition.DOWN;
+//            btn.setForeground(Color.YELLOW);
+//        }
+//        pressedFloors.add(new pressedFloor(floor, wantGo));
     }
 
 

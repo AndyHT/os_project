@@ -1,4 +1,4 @@
-package com.huoteng;
+package com.huoteng.controller;
 
 import com.huoteng.controller.ElevatorViewController;
 import com.huoteng.view.*;

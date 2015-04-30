@@ -1,5 +1,7 @@
 package com.huoteng.view;
 
+import com.huoteng.module.ElevatorCondition;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -45,13 +47,13 @@ public class MainView {
             btn = new JButton("Up");
             btn.setOpaque(true);
             panel_upDown.add(btn);
-            btn.setActionCommand(i + ",up");
+            btn.setActionCommand(ElevatorCondition.UP + ","  +i);
             btns_up.add(btn);
 
             btn = new JButton("Down");
             btn.setOpaque(true);
             panel_upDown.add(btn);
-            btn.setActionCommand(i + ",down");
+            btn.setActionCommand(ElevatorCondition.DOWN + "," + i);
             btns_down.add(btn);
 
             label = new JLabel(Integer.toString(i));

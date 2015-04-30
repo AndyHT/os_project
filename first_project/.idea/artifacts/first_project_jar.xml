@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact name="first_project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/first_project_jar</output-path>
+    <root id="root">
+      <element id="archive" name="first_project.jar">
+        <element id="module-output" name="first_project" />
+      </element>
+      <element id="library" level="module" name="JUnit4" module-name="first_project" />
+      <element id="directory" name="lib" />
+    </root>
+  </artifact>
+</component>
