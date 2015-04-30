@@ -101,11 +101,11 @@ public class EveryElevatorController implements Runnable, ActionListener{
 
                 switch (elevatorCondition) {
                     case ElevatorCondition.UP:
-                        elevatorMove(elevatorCurrentFloor, goFloor);
+                        elevatorMoveUp(elevatorCurrentFloor, goFloor);
                         btns_up.get(goFloor-1).setForeground(Color.BLACK);
                         break;
                     case ElevatorCondition.DOWN:
-                        elevatorMove(elevatorCurrentFloor, goFloor);
+                        elevatorMoveDown(elevatorCurrentFloor, goFloor);
                         btns_down.get(goFloor-1).setForeground(Color.BLACK);
                         break;
                     default:
@@ -138,45 +138,58 @@ public class EveryElevatorController implements Runnable, ActionListener{
     }
 
     /**
-     * 电梯运行Method
      * 还需要在运行过程中不停检查任务队列，need fix this bug
      * @param currentFloor 电梯当前楼层
      * @param goFloor 电梯要去的楼层
      */
-    private void elevatorMove(int currentFloor, int goFloor) {
-        switch (elevatorCondition) {
-            case ElevatorCondition.UP:
-                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_UP);
+    private void elevatorMoveUp(int currentFloor, int goFloor) {
+        labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_UP);
 
-                for ( int i = currentFloor; i < goFloor; i++) {
-                    elevators[i-1][elevatorNum].setBackground(Color.RED);
-                    elevatorCurrentFloor = i;
-                    elevatorSleep();
-                    elevators[i-1][elevatorNum].setBackground(Color.LIGHT_GRAY);
-                }
-                break;
-            case ElevatorCondition.DOWN:
-                labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_DOWN);
-
-                for ( int i = currentFloor; i > goFloor; i--) {
-                    elevators[i-1][elevatorNum].setBackground(Color.RED);
-                    elevatorCurrentFloor = i;
-                    elevatorSleep();
-                    elevators[i-1][elevatorNum].setBackground(Color.LIGHT_GRAY);
-                }
-                break;
-            default:
-                break;
+        for ( int i = currentFloor; i < goFloor; i++) {
+            if (1 == i) {
+                elevatorSleep();
+                elevators[0][elevatorNum].setBackground(Color.LIGHT_GRAY);
+            }
+            elevators[i][elevatorNum].setBackground(Color.RED);
+            elevatorCurrentFloor = i;
+            elevatorSleep();
+            elevators[i][elevatorNum].setBackground(Color.LIGHT_GRAY);
         }
 
         elevatorCondition = ElevatorCondition.FREEZ;
         elevators[elevatorCurrentFloor][elevatorNum].setBackground(Color.RED);
-        System.out.println(elevatorCurrentFloor);//elevatorCurrentFloor有问题
+        System.out.println(elevatorCurrentFloor);
         labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_OPEN);
         elevatorSleep();
         labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
         elevatorSleep();
         labels_condition.get(elevatorNum).setText(elevatorCurrentFloor+1 + "层");
+    }
+
+    /**
+     *
+     * @param currentFloor
+     * @param goFloor
+     */
+    private void elevatorMoveDown(int currentFloor, int goFloor) {
+        labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_DOWN);
+
+        for ( int i = currentFloor; i >= goFloor-1; i--) {
+            elevators[i][elevatorNum].setBackground(Color.RED);
+            elevatorCurrentFloor = i;
+            elevatorSleep();
+            elevators[i][elevatorNum].setBackground(Color.LIGHT_GRAY);
+        }
+
+        elevatorCondition = ElevatorCondition.FREEZ;
+        elevators[elevatorCurrentFloor][elevatorNum].setBackground(Color.RED);
+        System.out.println(elevatorCurrentFloor);
+        labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_OPEN);
+        elevatorSleep();
+        labels_condition.get(elevatorNum).setText(ElevatorCondition.STRING_CLOSE);
+        elevatorSleep();
+        labels_condition.get(elevatorNum).setText(elevatorCurrentFloor+1 + "层");
+
     }
 
     public void elevatorSleep() {

@@ -50,7 +50,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/huoteng/view/MainView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+              <caret line="134" column="44" selection-start-line="134" selection-start-column="44" selection-end-line="134" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -85,10 +85,16 @@
       <file leaf-file-name="EveryElevatorController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/huoteng/controller/EveryElevatorController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.87626773">
-              <caret line="122" column="26" selection-start-line="122" selection-start-column="26" selection-end-line="122" selection-end-column="26" />
+            <state vertical-scroll-proportion="2.2454362">
+              <caret line="192" column="5" selection-start-line="192" selection-start-column="5" selection-end-line="192" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#7135#7136#0" expanded="true" />
+                <element signature="e#7166#7167#0" expanded="true" />
+                <element signature="e#7283#7284#0" expanded="true" />
+                <element signature="e#7323#7324#0" expanded="true" />
+                <element signature="e#7368#7369#0" expanded="true" />
+                <element signature="e#7411#7412#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -149,9 +155,9 @@
         <option value="$PROJECT_DIR$/src/com/huoteng/controller/ElevatorBtnListener.java" />
         <option value="$PROJECT_DIR$/src/com/huoteng/Main.java" />
         <option value="$PROJECT_DIR$/src/com/huoteng/module/ElevatorCondition.java" />
-        <option value="$PROJECT_DIR$/src/com/huoteng/view/MainView.java" />
         <option value="$PROJECT_DIR$/src/com/huoteng/controller/UpDownController.java" />
         <option value="$PROJECT_DIR$/src/com/huoteng/controller/ElevatorViewController.java" />
+        <option value="$PROJECT_DIR$/src/com/huoteng/view/MainView.java" />
         <option value="$PROJECT_DIR$/src/com/huoteng/controller/EveryElevatorController.java" />
       </list>
     </option>
@@ -192,7 +198,26 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope">
+        <subPane subId="Problems" />
+        <subPane subId="Production">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="first_project">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+        <subPane subId="Tests" />
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -297,26 +322,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Problems" />
-        <subPane subId="Production">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="first_project">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="src">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-        <subPane subId="Tests" />
-      </pane>
+      <pane id="PackagesPane" />
       <pane id="Scratches">
         <subPane>
           <PATH>
@@ -699,11 +705,12 @@
       <workItem from="1430280736395" duration="957000" />
       <workItem from="1430287123755" duration="955000" />
       <workItem from="1430372349954" duration="1732000" />
+      <workItem from="1430374207466" duration="1813000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68279000" />
+    <option name="totallyTimeSpent" value="70092000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1436" height="877" extended-state="0" />
@@ -781,27 +788,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/huoteng/controller/EveryElevatorController.java</url>
-          <line>103</line>
-          <properties />
-          <option name="timeStamp" value="67" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/huoteng/controller/EveryElevatorController.java</url>
-          <line>105</line>
-          <properties />
-          <option name="timeStamp" value="68" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/huoteng/controller/EveryElevatorController.java</url>
-          <line>104</line>
-          <properties />
-          <option name="timeStamp" value="69" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="70" />
+      <option name="time" value="86" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -816,6 +803,12 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#7135#7136#0" expanded="true" />
+            <element signature="e#7166#7167#0" expanded="true" />
+            <element signature="e#7283#7284#0" expanded="true" />
+            <element signature="e#7323#7324#0" expanded="true" />
+            <element signature="e#7368#7369#0" expanded="true" />
+            <element signature="e#7411#7412#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -871,6 +864,12 @@
           <caret line="94" column="38" selection-start-line="94" selection-start-column="38" selection-end-line="94" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#7135#7136#0" expanded="true" />
+            <element signature="e#7166#7167#0" expanded="true" />
+            <element signature="e#7283#7284#0" expanded="true" />
+            <element signature="e#7323#7324#0" expanded="true" />
+            <element signature="e#7368#7369#0" expanded="true" />
+            <element signature="e#7411#7412#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -891,6 +890,12 @@
           <caret line="59" column="44" selection-start-line="59" selection-start-column="44" selection-end-line="59" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#7135#7136#0" expanded="true" />
+            <element signature="e#7166#7167#0" expanded="true" />
+            <element signature="e#7283#7284#0" expanded="true" />
+            <element signature="e#7323#7324#0" expanded="true" />
+            <element signature="e#7368#7369#0" expanded="true" />
+            <element signature="e#7411#7412#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -938,6 +943,12 @@
           <caret line="87" column="25" selection-start-line="87" selection-start-column="25" selection-end-line="87" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#7135#7136#0" expanded="true" />
+            <element signature="e#7166#7167#0" expanded="true" />
+            <element signature="e#7283#7284#0" expanded="true" />
+            <element signature="e#7323#7324#0" expanded="true" />
+            <element signature="e#7368#7369#0" expanded="true" />
+            <element signature="e#7411#7412#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1209,11 +1220,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/huoteng/module/ElevatorCondition.java">
+    <entry file="file://$PROJECT_DIR$/src/com/huoteng/controller/UpDownController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="9" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
-          <folding />
+          <caret line="53" column="22" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1227,20 +1240,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/huoteng/view/MainView.java">
+    <entry file="file://$PROJECT_DIR$/src/com/huoteng/module/ElevatorCondition.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="4" column="9" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/huoteng/controller/UpDownController.java">
+    <entry file="file://$PROJECT_DIR$/src/com/huoteng/view/MainView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="53" column="22" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="22" />
+          <caret line="134" column="44" selection-start-line="134" selection-start-column="44" selection-end-line="134" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1249,10 +1260,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/huoteng/controller/EveryElevatorController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.87626773">
-          <caret line="122" column="26" selection-start-line="122" selection-start-column="26" selection-end-line="122" selection-end-column="26" />
+        <state vertical-scroll-proportion="2.2454362">
+          <caret line="192" column="5" selection-start-line="192" selection-start-column="5" selection-end-line="192" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#7135#7136#0" expanded="true" />
+            <element signature="e#7166#7167#0" expanded="true" />
+            <element signature="e#7283#7284#0" expanded="true" />
+            <element signature="e#7323#7324#0" expanded="true" />
+            <element signature="e#7368#7369#0" expanded="true" />
+            <element signature="e#7411#7412#0" expanded="true" />
           </folding>
         </state>
       </provider>
