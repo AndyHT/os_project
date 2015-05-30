@@ -10,6 +10,7 @@ var counter = 0;//执行任务计数器
 var model = '首次适应算法';//默认模式为首次适应算法
 
 var tasks = [];//建立一个任务队列，绘图函数执行任务队列
+var deleteTasks = [];//删除任务的队列
 
 function println(str) {
 	var text = $('#monitor');
@@ -28,12 +29,32 @@ function draw(needSize) {
 	context.lineTo(usedSize + needSize, 0);
 	context.closePath();
 
-	context.lineWidth = 0;
+	context.lineWidth = 1;
 	context.strokeStyle = 'black';
 	context.stroke();
 
 	//矩形填充
 	context.fillStyle = 'red';
+	context.fill();
+
+}
+
+function deDraw(start, needSize) {
+
+	//绘制矩形
+	context.beginPath();
+	context.moveTo(start, 0);
+	context.lineTo(start, 100);
+	context.lineTo(start + needSize, 100);
+	context.lineTo(start + needSize, 0);
+	context.closePath();
+
+	context.lineWidth = 1;
+	context.strokeStyle = 'white';
+	context.stroke();
+
+	//矩形填充
+	context.fillStyle = 'white';
 	context.fill();
 
 }
@@ -45,23 +66,6 @@ window.onload = function(){
 
 };
 
-//清空canvas
-function cleanCanvas() {
-	context.beginPath();
-	context.moveTo(0, 0);
-	context.lineTo(0, 100);
-	context.lineTo(1000, 100);
-	context.lineTo(1000, 0);
-	context.closePath();
-
-	context.lineWidth = 0;
-	context.strokeStyle = 'white';
-	context.stroke();
-
-	//矩形填充
-	context.fillStyle = 'white';
-	context.fill();
-}
 
 //得到选择的算法
 function getSelector() {
@@ -69,7 +73,8 @@ function getSelector() {
 	console.log(selector.value);
 	console.log(model);
 	if (selector.value != model) {
-		cleanCanvas();
+		//清空canvas
+		deDraw(0, 1000);
 		usedSize = 0;
 	}
 }
@@ -90,7 +95,7 @@ function executor() {
 		//绘制内存图
 		draw(size);
 		usedSize += size;
-		tasks[counter] = size;
+		tasks.push(size);
 		counter++;
 		console.log(tasks);
 
@@ -106,6 +111,31 @@ function executor() {
 
 //根据输入删除进程
 function deleteProcess() {
+	//根据input删除process
+	var input = deleteP.input.value;
+	var index = parseInt(input) - 1;
+
+	var temp = tasks[index];
+	if (undefined === temp || 0 === temp) {
+		alert('进程不存在,请重新输入');
+		return;
+	} else {
+		var start = 0;
+		for (var i = 0; i < index; i++) {
+			start += tasks[i];
+		}
+		for (var i = 0; i < deleteTasks.length; i++) {
+			start += deleteTasks[i];
+		}
+		//释放内存
+		deDraw(start, tasks[index]);
+
+		deleteTasks.push(tasks[index]);
+		tasks[index] = 0;
+
+	}
+	console.log(temp);
+	console.log(tasks);
 
 
 }
