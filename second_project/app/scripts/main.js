@@ -65,18 +65,21 @@ window.onload = function(){
 
 
 //得到选择的算法
-function selectorIsChanged() {
+function selectorChanged() {
 	var selector = document.getElementById('algorithm');
+	model = selector.value;
 	//console.log(model);
-	if (selector.value !== model) {
-		//清空canvas
-		deDraw(0, 1000);
-		usedSize = 0;
+	//清空canvas
+	deDraw(0, 1000);
+	usedSize = 0;
 
-		//清空tasks
-		tasks = [];
-		counter = 0;
-	}
+	//清空tasks
+	tasks = [];
+	counter = 0;
+
+	//启动按钮
+	$('#actionOK').removeAttr('disabled');
+	$('#actionDelete').removeAttr('disabled');
 }
 
 //对tasks中的task按照start排序
@@ -99,9 +102,6 @@ function executor() {
 	//存储是否成功
 	var isSuccess = false;
 
-	//先判断运行模式
-	selectorIsChanged();
-
 	//根据input的值分配内存
 	var input = malloc.input.value;
 	var size = parseInt(input);
@@ -110,6 +110,7 @@ function executor() {
 		return;
 	} else {
 		var task = {};
+		console.log(tasks);
 		if (undefined === tasks[0]) {
 			//第一次写入内存，直接分配
 			task.start = usedSize;
@@ -282,6 +283,7 @@ function deleteProcess() {
 		//输出
 		println('结束进程' + input);
 		println('释放内存' + temp.size +'KB');
+		println('\n');
 
 	}
 

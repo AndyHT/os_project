@@ -41,7 +41,7 @@
           <div class="introduce">
             <p>内存大小：640K</p>
             <p>基本任务：假设初始态下，可用内存空间为640K，并有下列请求序列，请分别用首次适应算法和最佳适应算法进程内存块的分配和回收，并显示出每次分配和回收后的空闲分区链的情况来。</p>
-            <p>选择算法然后输入内存值</p>
+            <p>选择算法然后点击“确认”开始</p>
           </div>
 
           <div class="controll">
@@ -49,11 +49,12 @@
               <option>首次适应算法</option>
               <option>最佳适应算法</option>
             </select>
+            <button class="btn btn-default" type="button" onclick="selectorChanged()">确认</button>
             <div class="controll-text">
               <form name="malloc" class="input-group">
                 <input type="text" name="input" class="form-control" placeholder="输入需要的内存" />
                 <span class="input-group-btn">
-                <button class="btn btn-default" type="button" onclick="executor()">OK</button>
+                <button class="btn btn-default" type="button" onclick="executor()" disabled="disabled" id="actionOK">OK</button>
               </span>
               </form>
             </div>
@@ -61,7 +62,7 @@
               <form name="deleteP" class="input-group">
                 <input type="text" name="input" class="form-control" placeholder="输入需要的释放的进程" />
                 <span class="input-group-btn">
-                <button class="btn btn-default" type="button" onclick="deleteProcess()">Delete</button>
+                <button class="btn btn-default" type="button" onclick="deleteProcess()" disabled="disabled" id="actionDelete">Delete</button>
               </span>
               </form>
             </div>
