@@ -91,10 +91,10 @@ public class MainView {
                         && intputField.getText().compareTo("") != 0) {
 
                     //得到输入命令
-                    intputField.getText();
+                    String back = getInput(intputField.getText());
 
                     intputField.setText("");
-                    terminalView.append(rootPath + '\n');
+                    terminalView.append(rootPath + back);
                 }
             }
             public void keyReleased(KeyEvent event) {
@@ -102,6 +102,23 @@ public class MainView {
 
             public void keyTyped(KeyEvent event) {
             }
+        }
+
+        private String getInput(String input) {
+            String back = "输入有误请重新输入";
+
+            if (input.matches("^cd[\\d\\w\\s/~]*")) {
+                //cd命令
+            } else if (input.matches("^mkdir[\\d\\w\\s/~]*")) {
+                //mkdir命令
+            } else if (input.matches("^rm[\\d\\w\\s/~]*")) {
+                //rm命令
+            } else if (input.matches("^pwd[\\s]*")) {
+                //pwd命令
+            } else if (input.matches("^help[\\s]*")) {
+                //help
+            }
+            return back;
         }
     }
 }
