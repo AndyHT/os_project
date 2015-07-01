@@ -8,6 +8,8 @@ import java.awt.event.KeyListener;
 
 /**
  * 主视图
+ * 参考学长的项目生成视图
+ * 改进正则表达式匹配
  * Created by huoteng on 6/13/15.
  */
 public class MainView {
@@ -94,7 +96,7 @@ public class MainView {
                     String back = getInput(intputField.getText());
 
                     intputField.setText("");
-                    terminalView.append(rootPath + back);
+                    terminalView.append(back);
                 }
             }
             public void keyReleased(KeyEvent event) {
@@ -105,20 +107,32 @@ public class MainView {
         }
 
         private String getInput(String input) {
-            String back = "输入有误请重新输入";
+            //正则匹配输入命令
+            String back = "admin:~ $ 输入有误请重新输入";
+            Manager terminalManager = new Manager();
 
             if (input.matches("^cd[\\d\\w\\s/~]*")) {
                 //cd命令
+                terminalManager.order_cd("path");
+
             } else if (input.matches("^mkdir[\\d\\w\\s/~]*")) {
                 //mkdir命令
+                terminalManager.order_mkdir("newName");
+
             } else if (input.matches("^rm[\\d\\w\\s/~]*")) {
                 //rm命令
+                terminalManager.order_rm("rmName");
+
             } else if (input.matches("^pwd[\\s]*")) {
                 //pwd命令
+                back = terminalManager.order_pwd();
+
             } else if (input.matches("^help[\\s]*")) {
                 //help
+                back = terminalManager.order_help();
+
             }
-            return back;
+            return back + "\n";
         }
     }
 }
